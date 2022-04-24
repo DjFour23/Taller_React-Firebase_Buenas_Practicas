@@ -1,0 +1,3 @@
+Link amplify: https://main.d1rrahpmbwe1rv.amplifyapp.com/
+
+Link Netlify: https://lambent-croquembouche-35674a.netlify.app/

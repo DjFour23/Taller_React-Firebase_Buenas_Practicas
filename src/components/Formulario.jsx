@@ -5,6 +5,11 @@ import {nanoid} from 'nanoid'
 const Formulario = () => {
     const[item, setItem] = React.useState('')
     const[descripcion, setDescripcion] = React.useState('')
+    const[item3, setItem3] = React.useState('')
+    const[item4, setItem4] = React.useState('')
+    const[item5, setItem5] = React.useState('')
+    const[item6, setItem6] = React.useState('')
+    const[item7, setItem7] = React.useState('')
     const[lista, setLista] = React.useState([])
     const [modoEdicion, setModoEdicion] = React.useState(false)
     const[id, setId] = React.useState('')
@@ -17,7 +22,7 @@ const Formulario = () => {
                 const data = await db.collection('items').get()
                 const array = data.docs.map(item =>(
                     {
-                        id:item.id, ...item.data()
+                        id:item.id, ...item.data(),
                     }
                 ))
                 setLista(array)
@@ -27,6 +32,7 @@ const Formulario = () => {
         }
         obtenerDatos()
     })
+    
 
     const guardarDatos = async(e) => {
         e.preventDefault()
@@ -34,22 +40,48 @@ const Formulario = () => {
         //Alertas para comprobacion de campos vacios agregar
 
         if(!item.trim()){
-            setError('Campo fruta vacío')
+            setError('Campo item 1 vacío')
             return
         }
         if(!descripcion.trim()){
-            setError('Campo descripcion vacío')
+            setError('Campo item 2 vacío')
+            return
+        }
+        if(!item3.trim()){
+            setError('Campo item 3 vacío')
+            return
+        }
+        if(!item4.trim()){
+            setError('Campo item 4 vacío')
+            return
+        }
+        if(!item5.trim()){
+            setError('Campo item 5 vacío')
+            return
+        }
+        if(!item6.trim()){
+            setError('Campo item 6 vacío')
+            return
+        }
+        if(!item7.trim()){
+            setError('Campo item 7 vacío')
             return
         }
         try {
             const db = firebase.firestore()
             const nuevoItem = {
                 nombreItem: item,
-                nombreDescripcion: descripcion
+                nombreDescripcion: descripcion,
+                nombreItem3: item3,
+                nombreItem4: item4,
+                nombreItem5: item5,
+                nombreItem6: item6,
+                nombreItem7: item7,
             }
             await db.collection('items').add(nuevoItem)
             setLista([...lista,
-                {id:nanoid(), nombreItem: item, nombreDescripcion: descripcion}
+                {id:nanoid(), nombreItem: item, nombreDescripcion: descripcion, nombreItem3: item3, nombreItem4: item4
+                    , nombreItem5: item5, nombreItem6: item6, nombreItem7: item7}
             ])
         } catch (error) {
             console.log(error)
@@ -57,6 +89,11 @@ const Formulario = () => {
         setModoEdicion(false)
         setItem('')
         setDescripcion('')
+        setItem3('')
+        setItem4('')
+        setItem5('')
+        setItem6('')
+        setItem7('')
         setError(null)
 
         //Fin alertas para comprobacion de campos vacios
@@ -77,6 +114,11 @@ const Formulario = () => {
     const auxEditar = (item)=>{
         setItem(item.nombreItem)
         setDescripcion(item.nombreDescripcion)
+        setItem3(item.nombreItem3)
+        setItem4(item.nombreItem4)
+        setItem5(item.nombreItem5)
+        setItem6(item.nombreItem6)
+        setItem7(item.nombreItem7)
         setModoEdicion(true)
         setId(item.id)
     }
@@ -91,18 +133,43 @@ const Formulario = () => {
             return
         }
         if(!descripcion.trim()){
-            setError('Campo descripcion vacío')
+            setError('Campo item 2 vacío')
+            return
+        }
+        if(!item3.trim()){
+            setError('Campo item 3 vacío')
+            return
+        }
+        if(!item4.trim()){
+            setError('Campo item 4 vacío')
+            return
+        }
+        if(!item5.trim()){
+            setError('Campo item 5 vacío')
+            return
+        }
+        if(!item6.trim()){
+            setError('Campo item 6 vacío')
+            return
+        }
+        if(!item7.trim()){
+            setError('Campo item 7 vacío')
             return
         }
         
         //Fin comprobacion campos vacios editar
-        
+
         try {
             const db = firebase.firestore()
             await db.collection('items').doc(id).update(
                 {
                     nombreItem:item,
-                    nombreDescripcion:descripcion
+                    nombreDescripcion:descripcion,
+                    nombreItem3:item3,
+                    nombreItem4:item4,
+                    nombreItem5:item5,
+                    nombreItem6:item6,
+                    nombreItem7:item7
                 }
             )
             setModoEdicion(false)
@@ -111,6 +178,11 @@ const Formulario = () => {
         }
         setItem('')
         setDescripcion('')
+        setItem3('')
+        setItem4('')
+        setItem5('')
+        setItem6('')
+        setItem7('')
         setError(null)
     }
 
@@ -118,6 +190,11 @@ const Formulario = () => {
         setModoEdicion(false)
         setItem('')
         setDescripcion('')
+        setItem3('')
+        setItem4('')
+        setItem5('')
+        setItem6('')
+        setItem7('')
         setError(null)
     }
     return(
@@ -127,17 +204,39 @@ const Formulario = () => {
             <div className="row">
                 <div className="col-8">
                     <h4 className="text-center">Listado de items</h4>
-                    <ul className="list-group">
-                        {
-                        lista.map((item)=>(
-                            <li className='list-group-item' key={item.id}>
-                                <span className="lead">{item.nombreItem} - {item.nombreDescripcion}</span>
-                                <button className="btn btn-danger btn-sm float-end mx-2" onClick={()=> eliminar(item.id)}>Eliminar</button>
-                                <button className="btn btn-warning btn-sm float-end mx-2" onClick={()=> auxEditar(item)}>Editar</button>
-                            </li>
-                        ))
-                        }
-                    </ul>
+                    <table className="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>Item 1</th>
+                                <th>Item 2</th>
+                                <th>Item 3</th>
+                                <th>Item 4</th>
+                                <th>Item 5</th>
+                                <th>Item 6</th>
+                                <th>Item 7</th>
+                                <th>OPCIONES</th>
+                            </tr>
+                        </thead>
+                        {lista.map((item)=>(
+                        <tbody>
+                            <tr key={item.id}>
+                                <td>{item.nombreItem}</td>
+                                <td>{item.nombreDescripcion}</td>
+                                <td>{item.nombreItem3}</td>
+                                <td>{item.nombreItem4}</td>
+                                <td>{item.nombreItem5}</td>
+                                <td>{item.nombreItem6}</td>
+                                <td>{item.nombreItem7}</td>
+                                <td>
+                                    <center>
+                                        <button className="btn btn-danger btn-sm float-end mx-2" onClick={()=> eliminar(item.id)}>Eliminar</button>
+                                        <button className="btn btn-warning btn-sm float-end mx-2" onClick={()=> auxEditar(item)}>Editar</button>
+                                    </center>
+                                </td>
+                            </tr>
+                        </tbody>
+                        ))}   
+                    </table>
                 </div>
                 <div className="col-4">
                     <h4 className="text-center">
@@ -157,12 +256,48 @@ const Formulario = () => {
                             value = {item}
                         />
                         <input
-                        className="form-control mb-2"
-                        type="text"
-                        placeholder='Ingrese Descripcion'
-                        onChange={(e) => setDescripcion(e.target.value)}
-                        value = {descripcion}
-                        />{
+                            className="form-control mb-2"
+                            type="text"
+                            placeholder='Ingrese nombre item 2'
+                            onChange={(e) => setDescripcion(e.target.value)}
+                            value = {descripcion}
+                        />
+                        <input
+                            className="form-control mb-2"
+                            type="text"
+                            placeholder='Ingrese nombre item 3'
+                            onChange={(e) => setItem3(e.target.value)}
+                            value = {item3}
+                        />
+                        <input
+                            className="form-control mb-2"
+                            type="text"
+                            placeholder='Ingrese nombre item 4'
+                            onChange={(e) => setItem4(e.target.value)}
+                            value = {item4}
+                        />
+                        <input
+                            className="form-control mb-2"
+                            type="text"
+                            placeholder='Ingrese nombre item 5'
+                            onChange={(e) => setItem5(e.target.value)}
+                            value = {item5}
+                        />
+                        <input
+                            className="form-control mb-2"
+                            type="text"
+                            placeholder='Ingrese nombre item 6'
+                            onChange={(e) => setItem6(e.target.value)}
+                            value = {item6}
+                        />
+                        <input
+                            className="form-control mb-2"
+                            type="text"
+                            placeholder='Ingrese nombre item 7'
+                            onChange={(e) => setItem7(e.target.value)}
+                            value = {item7}
+                        />
+                        {
                             modoEdicion? (
                                 <>
                                     <button className='btn btn-warning btn-block' type='submit'>Editar</button>
@@ -172,8 +307,6 @@ const Formulario = () => {
                                 <button className='btn btn-primary btn-block' type='submit'>Agregar</button>
                             )
                         }
-                        
-                        
                     </form>
                 </div>
             </div>
